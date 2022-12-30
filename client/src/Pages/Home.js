@@ -16,15 +16,15 @@ const Home = () => {
         borderRadius="lg"
         borderWidth="1px"
       >
-        <Text fontSize="4xl" fontFamily="Work Sans">
+        <Text fontSize="4xl" fontFamily="Work Sans" color='teal'>
           Welcome
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
         <Tabs isFitted variant="enclosed">
-          <TabList mb="1em">
+          <TabList mb="1em" color='teal' >
             <Tab>Login</Tab>
-            <Tab>Sign Up</Tab>
+            <Tab >Sign Up</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
