@@ -7,8 +7,8 @@ export const verifyJWT =async (req, res, next) => {
     if (token) {
       const decoded = jwt.verify(token, "test");
 
-      // req.user = await User.findById(decoded.id).select("-password");
-      req.userId=decoded.id
+      req.user = await User.findById(decoded.id).select("-password");
+      // req.userId=decoded.id
       // console.log(req.user)
       next();
     }

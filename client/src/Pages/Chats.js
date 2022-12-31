@@ -1,9 +1,18 @@
-import React from 'react'
+import React from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Chats = () => {
-  return (
-    <div>Chats</div>
-  )
-}
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("profile"));
 
-export default Chats
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, []);
+
+  return <div>Chats</div>;
+};
+
+export default Chats;
