@@ -45,7 +45,7 @@ const SignUp = () => {
       const { data } = await signin(form);
       localStorage.setItem("profile", JSON.stringify(data));
       toast({
-        title: 'Log In Successful',
+        title: 'Login Successful',
         status: "success",
         duration: 3000,
         isClosable: true,
