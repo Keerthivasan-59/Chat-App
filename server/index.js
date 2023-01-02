@@ -3,8 +3,8 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import userRoutes from './routes/user.js'
-import chatRoutes from './routes/chat.js'
+import userRoutes from "./routes/user.js";
+import chatRoutes from "./routes/chat.js";
 
 const app = express();
 dotenv.config();
@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 app.use("/users", userRoutes);
-app.use('/chat',chatRoutes)
+app.use("/chat", chatRoutes);
 
 const CONNECTION_URL =
   process.env.CONNECTION_URL ||

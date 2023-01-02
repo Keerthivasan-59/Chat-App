@@ -29,9 +29,9 @@ const ProfileModal = ({ children }) => {
           onClick={onOpen}
         />
       )}
-      <Modal isCentered size='lg' isOpen={isOpen} onClose={onClose}>
+      <Modal isCentered size="lg" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent h='410px' >
+        <ModalContent h="410px">
           <ModalHeader
             fontFamily="Work sans"
             fontSize="40px"
@@ -41,14 +41,28 @@ const ProfileModal = ({ children }) => {
             {user.result.name}
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody display='flex' flexDir='column' alignItems='center' justifyContent='space-between' > 
+          <ModalBody
+            display="flex"
+            flexDir="column"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Image
               borderRadius="full"
               boxSize="150px"
-              src={user.result.pic}
+              src={
+                user.result.pic
+                  ? user.result.pic
+                  : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+              }
               alt={user.name}
             />
-            <Text fontFamily='Work sans' fontSize={{base:'24px', md:'28px'}} >Email: {user.result.email} </Text>
+            <Text
+              fontFamily="Work sans"
+              fontSize={{ base: "24px", md: "28px" }}
+            >
+              Email: {user.result.email}{" "}
+            </Text>
           </ModalBody>
 
           <ModalFooter>
