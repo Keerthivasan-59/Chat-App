@@ -22,3 +22,8 @@ export const fetchUsers=(search)=> API.get(`/users?search=${search}`)
 export const createChat=(userId)=> API.post(`/chat`,userId)
 
 export const fetchChats=()=> API.get('/chat')
+
+export const createGroup=(groupChatName,selectedUsers)=> API.post(`/chat/group`, {
+        name: groupChatName,
+        users: JSON.stringify(selectedUsers.map((u) => u._id)),
+      })

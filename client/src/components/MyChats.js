@@ -5,6 +5,7 @@ import { fetchChats } from "../api";
 import { getSender } from "../config/ChatLogic";
 import { ChatContext } from "../Context/chatContext";
 import ChatLoading from "./ChatLoading";
+import GroupChatModal from "./GroupChatModal";
 
 const MyChats = () => {
   const {selectedChat,setSelectedChat,chats,setChats}=useContext(ChatContext)
@@ -33,7 +34,7 @@ const MyChats = () => {
       w={{ base: "100%", md: "31%" }}
       borderRadius="lg"
       borderWidth="1px"
-      overflowY='hidden'
+      overflowY="hidden"
     >
       <Box
         pb={3}
@@ -46,13 +47,15 @@ const MyChats = () => {
         alignItems="center"
       >
         My Chats
-        <Button
-          d="flex"
-          fontSize={{ base: "17px", md: "10px", lg: "17px" }}
-          rightIcon={<AddIcon />}
-        >
-          New Group Chat
-        </Button>
+        <GroupChatModal>
+          <Button
+            d="flex"
+            fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+            rightIcon={<AddIcon />}
+          >
+            New Group Chat
+          </Button>
+        </GroupChatModal>
       </Box>
       <Box
         display="flex"
@@ -67,7 +70,7 @@ const MyChats = () => {
           <Stack overflow="scroll">
             {chats.map((c) => (
               <Box
-                onClick={()=> setSelectedChat(c)}
+                onClick={() => setSelectedChat(c)}
                 cursor="pointer"
                 bg={selectedChat === c ? "#38B2AC" : "#E8E8E8"}
                 color={selectedChat === c ? "white" : "black"}
@@ -77,7 +80,7 @@ const MyChats = () => {
                 key={c._id}
               >
                 <Text>
-                  {!c.isGroupChat? getSender(loggedUser,c.users): c.chatName}
+                  {!c.isGroupChat ? getSender(loggedUser, c.users) : c.chatName}
                 </Text>
               </Box>
             ))}
