@@ -20,3 +20,5 @@ export const signup = (formData) => API.post("/users/signup", formData);
 export const fetchUsers=(search)=> API.get(`/users?search=${search}`)
 
 export const createChat=(userId)=> API.post(`/chat`,userId)
+
+export const fetchChats=()=> API.get('/chat')

@@ -35,27 +35,27 @@ const SideDrawer = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
-  const [chat, setChat] = useContext(ChatContext);
-  const [selectedChat, setSelectedChat] = useContext(ChatContext);
+  const {setSelectedChat,chats,setChats}=useContext(ChatContext)
   const toast = useToast();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("profile"));
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const { data } = await fetchUsers(search);
 
-  useEffect(async () => {
-    try {
-      setLoading(true);
-      const { data } = await fetchUsers(search);
-
-      setLoading(false);
-      setSearchResult(data);
-    } catch (error) {
-      console.log(error);
+        setLoading(false);
+        setSearchResult(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  
-  }, [search])
-  
+    fetchData();
+  }, [search]);
+
   const handleLogout = () => {
     localStorage.removeItem("profile");
     navigate("/");
@@ -87,8 +87,12 @@ const SideDrawer = () => {
     setLoadingChat(true)
 
     const {data}=await createChat(userId)
+      if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+
+    setSelectedChat(data)
+    setLoadingChat(false)
    } catch (error) {
-    console.log(error)
+    console.log(error.message)
    }
   };
 

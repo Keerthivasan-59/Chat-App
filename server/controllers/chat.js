@@ -56,7 +56,7 @@ export const createChat = async (req, res) => {
 
       res.status(200).json(FullChat);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   }
 };
@@ -129,7 +129,7 @@ export const addToGroup = async (req, res) => {
 
   const added = await Chat.findByIdAndUpdate(
     chatId,
-    { $push:{users:userId} },
+    { $push: { users: userId } },
     { new: true }
   )
     .populate("users", "-password")
