@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import userRoutes from "./routes/user.js";
 import chatRoutes from "./routes/chat.js";
+import messageRoutes from "./routes/message.js";
 
 const app = express();
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cors());
 
 app.use("/users", userRoutes);
 app.use("/chat", chatRoutes);
+app.use("/message", messageRoutes);
 
 const CONNECTION_URL =
   process.env.CONNECTION_URL ||

@@ -31,7 +31,7 @@ export const signin = async (req, res) => {
     const token = jwt.sign(
       { name: existingUser.name, id: existingUser._id },
       "test",
-      { expiresIn: "3h" }
+      { expiresIn: "8h" }
     );
 
     res.status(200).json({ result: existingUser, token });
@@ -63,7 +63,7 @@ export const signup = async (req, res) => {
       pic,
     });
     const token = jwt.sign({ name: newUser.name, id: newUser._id }, "test", {
-      expiresIn: "3h",
+      expiresIn: "8h",
     });
     res.status(200).json({ result: newUser, token });
   } catch (error) {
