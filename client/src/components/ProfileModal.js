@@ -13,7 +13,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ViewIcon } from "@chakra-ui/icons";
+import { InfoIcon, ViewIcon } from "@chakra-ui/icons";
 
 const ProfileModal = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -25,7 +25,7 @@ const ProfileModal = ({ children }) => {
       ) : (
         <IconButton
           display={{ base: "flex" }}
-          icon={<ViewIcon />}
+          icon={<InfoIcon />}
           onClick={onOpen}
         />
       )}

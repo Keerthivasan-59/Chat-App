@@ -7,7 +7,7 @@ import { ChatContext } from "../Context/chatContext";
 import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./GroupChatModal";
 
-const MyChats = () => {
+const MyChats = ({fetchAgain}) => {
   const {selectedChat,setSelectedChat,chats,setChats}=useContext(ChatContext)
 
   const loggedUser = JSON.parse(localStorage.getItem("profile"));
@@ -22,11 +22,11 @@ const MyChats = () => {
       }
     };
     Chats();
-  },[]);
+  },[fetchAgain]);
 
   return (
     <Box
-      d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+      display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       alignItems="center"
       flexDir="column"
       p={3}
@@ -39,7 +39,7 @@ const MyChats = () => {
       <Box
         pb={3}
         px={3}
-        fontSize={{ base: "28px", md: "30px" }}
+        fontSize={{ base: "22px", md: "22px" }}
         fontFamily="Work sans"
         display="flex"
         w="100%"
@@ -50,7 +50,7 @@ const MyChats = () => {
         <GroupChatModal>
           <Button
             d="flex"
-            fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+            fontSize={{ base: "14px", md: "14px", lg: "17px" }}
             rightIcon={<AddIcon />}
           >
             New Group Chat
