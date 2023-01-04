@@ -19,7 +19,6 @@ import { ChatContext } from "../Context/chatContext";
 import { createGroup, fetchUsers } from "../api";
 import UserListItem from "./UserListItem.js";
 import UserBadgeItem from "./UserBadgeItem";
-import axios from "axios";
 
 const GroupChatModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

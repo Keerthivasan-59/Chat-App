@@ -15,11 +15,14 @@ import {
   Box,
   FormControl,
   Input,
+  Spinner,
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { ChatContext } from "../Context/chatContext";
 import UserBadgeItem from "./UserBadgeItem.js";
 import axios from "axios";
+import { fetchUsers } from "../api";
+import UserListItem from "./UserListItem";
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,7 +35,50 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const [renameloading, setRenameLoading] = useState(false);
   const toast = useToast();
 
-  const handleRemove = () => {};
+  const handleRemove = async (user1) => {
+    if (selectedChat.groupAdmin._id !== user.result._id && user1._id !== user.result._id) {
+      toast({
+        title: "Only admins can remove someone!",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/chat/groupremove`,
+        {
+          chatId: selectedChat._id,
+          userId: user1._id,
+        },
+        config
+      );
+
+      user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
+      setFetchAgain(!fetchAgain);
+      setLoading(false);
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+    }
+    setGroupChatName("");
+  };
   const handleRename = async () => {
     if (!groupChatName) return;
 
@@ -69,7 +115,74 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
     }
     setGroupChatName("");
   };
-  const handleSearch = () => {};
+  const handleSearch = async (query) => {
+    setSearch(query);
+    if (!query) return;
+
+    try {
+      setLoading(true);
+      const { data } = await fetchUsers(search);
+      setSearchResult(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleAddUser = async (user1) => {
+    if (selectedChat.users.find((u) => u._id === user1._id)) {
+      toast({
+        title: "User Already in group!",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+    if (selectedChat.groupAdmin._id !== user.result._id) {
+      toast({
+        title: "Only admins can add someone!",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/chat/groupadd`,
+        {
+          chatId: selectedChat._id,
+          userId: user1._id,
+        },
+        config
+      );
+
+      setSelectedChat(data);
+      setFetchAgain(!fetchAgain);
+      setLoading(false);
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+    }
+    setGroupChatName("");
+  };
+
   return (
     <>
       <IconButton
@@ -122,13 +235,26 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
                 Update
               </Button>
             </FormControl>
-            <FormControl>
+            <FormControl mb={3}>
               <Input
                 placeholder="Add User to group"
                 mb={1}
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </FormControl>
+            {loading ? (
+              <Spinner />
+            ) : (
+              searchResult
+                .slice(0, 4)
+                .map((user) => (
+                  <UserListItem
+                    key={user._id}
+                    user={user}
+                    handleFunction={() => handleAddUser(user)}
+                  />
+                ))
+            )}
           </ModalBody>
 
           <ModalFooter>
