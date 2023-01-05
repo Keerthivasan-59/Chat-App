@@ -10,7 +10,7 @@ import GroupChatModal from "./GroupChatModal";
 const MyChats = ({fetchAgain}) => {
   const {selectedChat,setSelectedChat,chats,setChats}=useContext(ChatContext)
 
-  const loggedUser = JSON.parse(localStorage.getItem("profile"));
+  const loggedUser = JSON.parse(localStorage.getItem("profile")).result;
 
   useEffect(() => {
     const Chats = async () => {

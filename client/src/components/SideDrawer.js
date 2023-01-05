@@ -38,7 +38,8 @@ const SideDrawer = () => {
   const {setSelectedChat,chats,setChats}=useContext(ChatContext)
   const toast = useToast();
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("profile"));
+  const user = JSON.parse(localStorage.getItem("profile")).result;
+  const token = JSON.parse(localStorage.getItem("profile")).token
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
@@ -132,12 +133,12 @@ const SideDrawer = () => {
             <Avatar
               cursor="pointer"
               size="sm"
-              name={user.result.name}
-              src={user.result.pic}
+              name={user.name}
+              src={user.pic}
             />
           </MenuButton>
           <MenuList>
-            <ProfileModal>
+            <ProfileModal user={user} >
               <MenuItem>My Profile</MenuItem>
             </ProfileModal>
             <MenuDivider />

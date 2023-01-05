@@ -27,7 +27,8 @@ import UserListItem from "./UserListItem";
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { selectedChat, setSelectedChat } = useContext(ChatContext);
-  const user = JSON.parse(localStorage.getItem("profile"));
+  const user = JSON.parse(localStorage.getItem("profile")).result;
+  const token=JSON.parse(localStorage.getItem("profile")).token;
   const [groupChatName, setGroupChatName] = useState("");
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -36,7 +37,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
   const toast = useToast();
 
   const handleRemove = async (user1) => {
-    if (selectedChat.groupAdmin._id !== user.result._id && user1._id !== user.result._id) {
+    if (selectedChat.groupAdmin._id !== user._id && user1._id !== user._id) {
       toast({
         title: "Only admins can remove someone!",
         status: "error",
@@ -51,7 +52,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
       const { data } = await axios.put(
@@ -87,7 +88,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
       setRenameLoading(true);
       const config = {
         headers: {
-          authorization: `Bearer ${user.token}`,
+          authorization: `Bearer ${token}`,
         },
       };
       const { data } = await axios.put(
@@ -123,7 +124,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
     try {
       setLoading(true);
       const { data } = await fetchUsers(search);
-      setSearchResult(data);
+      setSearch(data);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -140,7 +141,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
       });
       return;
     }
-    if (selectedChat.groupAdmin._id !== user.result._id) {
+    if (selectedChat.groupAdmin._id !== user._id) {
       toast({
         title: "Only admins can add someone!",
         status: "error",
@@ -155,7 +156,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
       const { data } = await axios.put(
