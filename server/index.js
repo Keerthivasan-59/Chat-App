@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/user.js";
 import chatRoutes from "./routes/chat.js";
 import messageRoutes from "./routes/message.js";
+import { Server } from "socket.io";
 
 const app = express();
 dotenv.config();
@@ -38,7 +39,19 @@ mongoose.connection.on("disconnected", () => {
   console.log("mongoDB disconnected!");
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   connect();
   console.log("Connected to backend.");
+});
+
+const io = new Server(server,{
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+
+io.on("connection", (socket) => {
+  console.log("connected to socket");
 });

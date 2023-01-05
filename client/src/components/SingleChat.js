@@ -15,6 +15,10 @@ import ProfileModal from "./ProfileModal";
 import UpdateGroupChatModal from "./UpdateGroupChatModal";
 import "./styles.css";
 import ScrollableChat from "./ScrollableChat";
+import {io} from "socket.io-client";
+
+const ENDPOINT = "http://localhost:5000";
+var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
@@ -22,7 +26,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [newMessage, setNewMessage] = useState("");
   const { selectedChat, setSelectedChat } = useContext(ChatContext);
   const user = JSON.parse(localStorage.getItem("profile")).result;
-const token=JSON.parse(localStorage.getItem("profile")).token
+  const token = JSON.parse(localStorage.getItem("profile")).token;
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -39,7 +43,6 @@ const token=JSON.parse(localStorage.getItem("profile")).token
       const { data } = await axios.get(`/message/${selectedChat._id}`, config);
       setMessages(data);
       setLoading(false);
-      console.log(messages);
     } catch (error) {
       console.log(error);
     }
@@ -49,6 +52,9 @@ const token=JSON.parse(localStorage.getItem("profile")).token
     fetchMessages();
   }, [selectedChat]);
 
+  useEffect(() => {
+    socket = io(ENDPOINT);
+  }, []);
   const sendMessage = async (e) => {
     if (e.key === "Enter" && newMessage) {
       try {
