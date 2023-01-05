@@ -6,6 +6,8 @@ import { getSender,getSenderFull } from "../config/ChatLogic";
 import { ChatContext } from "../Context/chatContext";
 import ProfileModal from "./ProfileModal";
 import UpdateGroupChatModal from "./UpdateGroupChatModal";
+import './styles.css'
+import ScrollableChat from "./ScrollableChat";
 
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
     const [messages, setMessages] = useState([]);
@@ -101,6 +103,7 @@ useEffect(() => {
                 <UpdateGroupChatModal
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
+                  fetchMessages={fetchMessages}
                 />
               </>
             )}
@@ -126,7 +129,7 @@ useEffect(() => {
               />
             ) : (
               <div className="messages">
-                {/* <ScrollableChat messages={messages} /> */}
+                <ScrollableChat messages={messages} />
               </div>
             )}
             <FormControl
