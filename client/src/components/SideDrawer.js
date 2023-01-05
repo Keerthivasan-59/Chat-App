@@ -29,6 +29,7 @@ import { createChat, fetchUsers } from "../api";
 import ChatLoading from "./ChatLoading";
 import UserListItem from "./UserListItem";
 import { ChatContext } from "../Context/chatContext";
+import axios from "axios";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -87,11 +88,18 @@ const SideDrawer = () => {
    try {
     setLoadingChat(true)
 
-    const {data}=await createChat(userId)
+   const config = {
+     headers: {
+       "Content-type": "application/json",
+       Authorization: `Bearer ${token}`,
+     },
+   };
+   const { data } = await axios.post(`/chat`, { userId }, config);
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
 
     setSelectedChat(data)
     setLoadingChat(false)
+
    } catch (error) {
     console.log(error.message)
    }
@@ -168,6 +176,7 @@ const SideDrawer = () => {
                   key={user._id}
                   user={user}
                   handleFunction={() => accessChat(user._id)}
+                  onClick={onClose}
                 />
               ))
             )}
